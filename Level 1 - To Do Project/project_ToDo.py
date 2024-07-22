@@ -51,34 +51,38 @@ while True:
     print("[6] - Exit")
     print("----------------------------")
 
-    choice = int(input("\nWhat is your choice? "))
-
-    if choice == 6:
-        print('\nThe program has finished. See you!\n')
-        break
-    
-    elif choice == 1:
-        task_name = str(input("\nWhat do you need TO DO? ")).strip().title()
-        add_task(task_list,task_name)
+    try:
+        choice = int(input("\nWhat is your choice? "))
+            
+        if choice == 6:
+            print('\nThe program has finished. See you!\n')
+            break
         
-    elif choice == 2:
-        if len(task_list) == 0:
-            print(f"You have NO task yet.")
+        elif choice == 1:
+            task_name = str(input("\nWhat do you need TO DO? ")).strip().title()
+            add_task(task_list,task_name)
+            
+        elif choice == 2:
+            if len(task_list) == 0:
+                print(f"You have NO task yet.")
 
-        else:
+            else:
+                see_tasks(task_list)
+
+        elif choice == 3:
+            see_tasks(task_list)
+            index = int(input("What task would you like to update? "))
+            new_task = str(input("Write the new task: ")).strip().title()
+            update_task(task_list, index, new_task)
+        
+        elif choice == 4:
+            see_tasks(task_list)
+            index = int(input("What task would you like to update? "))
+            check_task(task_list, index)
+
+        elif choice == 5:
+            delete_checked_taks(task_list)
             see_tasks(task_list)
 
-    elif choice == 3:
-        see_tasks(task_list)
-        index = int(input("What task would you like to update? "))
-        new_task = str(input("Write the new task: ")).strip().title()
-        update_task(task_list, index, new_task)
-    
-    elif choice == 4:
-        see_tasks(task_list)
-        index = int(input("What task would you like to update? "))
-        check_task(task_list, index)
-
-    elif choice == 5:
-        delete_checked_taks(task_list)
-        see_tasks(task_list)
+    except Exception as problems:
+        print(f"Something is wrong. Here's the problem: {problems}")
