@@ -85,4 +85,4 @@ while True:
             see_tasks(task_list)
 
     except Exception as problems:
-        print(f"\nSomething is wrong. Here's the problem: {problems}\n")
+        print(f"Something is wrong. Here's the problem: {problems}")
