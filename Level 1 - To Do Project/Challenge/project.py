@@ -57,7 +57,7 @@ while True:
         
         elif choice == 4:
             see_contacts(contacts_list, 'FAVORITING A CONTACT', color= 'MAGENTA')
-            index_contact = int(input('What contact do you wanna favorite? ')) - 1
+            index_contact = int(input('What contact do you wanna change the favorite status? ')) - 1
             favorite_contact(contacts_list, index_contact)
 
         elif choice == 5:

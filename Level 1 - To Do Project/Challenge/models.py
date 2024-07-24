@@ -79,10 +79,14 @@ def edting_some_info (list, index, info_check, new_info):
     elif info_check == 'favorite':
         new_info = str(new_info).upper()[0]
     list[index][f"{info_check}"] = new_info
-    colors(f"\n{str(info_check).upper()}'S contact updated!")
+    colors(f"\n{str(info_check).upper()}'S contact updated!", 'YELLOW')
     return
 
 def favorite_contact(list, index):
-    list[index]["favorite"] = 'Y'
-    colors(f"{str(list[index]["name"]).upper()} is now a favorite contact!",'MAGENTA')
+    if list[index]["favorite"] == 'Y': 
+        list[index]["favorite"] = 'N'
+        colors(f"{str(list[index]["name"]).upper()} is not a favorite contact anymore!",'MAGENTA')
+    else:
+        list[index]["favorite"] = 'Y'
+        colors(f"{str(list[index]["name"]).upper()} is now a favorite contact!",'MAGENTA')
     return
