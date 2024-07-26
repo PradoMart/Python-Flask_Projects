@@ -27,24 +27,20 @@ class GeneralCharacter:
         if self.__life < 0:
             self.__life = 0
     
-    def attacking(self, target):
-        global damage_normal_attack
-        damage_normal_attack = self.__level * randint(2,4)
-        target.got_attacked(damage_normal_attack)
-        print(f"{self.get_name()} has choosen a Normal Attack and it caused {damage_normal_attack} of damage in {target.get_name()}'s life.")
+    def attacking(self, target, type_attack):
+        global damage
+        
+        if type_attack == 1:
+            damage = self.__level * randint(2,4)
+            target.got_attacked(damage)
+            return damage
 
-    def super_attack(self, target):
-        global damage_super_attack
-        damage_super_attack = self.__level * randint(5,6)
-        target.got_attacked(damage_super_attack)
-        print(f"{self.get_name()} has choosen a Special Attack and it caused {damage_super_attack} of damage in {target.get_name()}'s life.")
-
-    def get_damage(self, choice):
-        if choice == 1:
-            return damage_normal_attack
         else:
-            return damage_super_attack
-    
+            damage = self.__level * randint(5,6)
+            target.got_attacked(damage)
+            return damage
+
+# The classes User and Computer is not very important, it could work with only GeneralCharacter Class, but its just to practice.    
 class User(GeneralCharacter):
     def __init__(self, name, level, life, skill) -> None:
         super().__init__(name, level, life)
@@ -68,7 +64,6 @@ class Computer(GeneralCharacter):
         return f'{super().show_details()}\nType: {self.get_type()}\n'
 
 # Coding the battles engine
-
 class GameEngine():
     def __init__(self) -> None:
         self.user = User(name= name_user, level=level_user, life=life_user_computer, skill=skill_user)
@@ -86,47 +81,41 @@ class GameEngine():
 
             input('\nPress ENTER to play...')
             try:
-                chosen_attack = int(input("What attack would you like to use in this round?\n( [1] - Normal Attack  ||  [2] - Special Attack ) "))
+                chosen_attack = int(input("What attack would you like to use in this round?\n( [1] - Normal Attack || [2] - Special Attack ) "))
             except Exception as problems:
                 print(f'Something went wrong! Here is the problem: {problems}')
 
             print()
-            if chosen_attack == 1:
-                self.user.attacking(self.computer)
-            else:
-                self.user.super_attack(self.computer)
-            
-            computer_choice = randint(1,2)
+            damage_user = self.user.attacking(self.computer,chosen_attack)
+            print(f"{self.user.get_name()} has attacked and it caused {damage_user} of damage in {self.computer.get_name()}.")
 
-            if computer_choice == 1:
-                self.computer.attacking(self.user)
-            else:
-                self.computer.super_attack(self.user)
+            computer_choice = randint(1,2)
+            damage_computer = self.computer.attacking(self.user, computer_choice)
+            print(f"{self.computer.get_name()} has attacked and it caused {damage_computer} of damage in {self.user.get_name()}.")
 
         #now we have the result of the battle
         print('')
-        if self.user.get_life() == 0 and self.computer.get_life() == 0:
-            if self.user.get_damage(chosen_attack) > self.computer.get_damage(computer_choice):
-                print(f'{self.user.get_name()} won the battle!')
-            else:
-                print(f'{self.computer.get_name()} won the battle!')
-        elif self.user.get_life() > self.computer.get_life():
+        
+        if self.user.get_life() > self.computer.get_life():
             print(f'{self.user.get_name()} won the battle!')
         elif self.user.get_life() < self.computer.get_life():
             print(f'{self.computer.get_name()} won the battle!')    
         else:
-            print(f'There is a draw. Play again!')     
-
+            if damage_user > damage_computer:
+                print(f'{self.user.get_name()} won the battle!')
+            elif damage_computer < damage_user:
+                print(f'{self.computer.get_name()} won the battle!')
+            else:
+                print(f'There is a draw. Play again!')   
         return
 
 
-#User informations Prompt
+#User informations Prompts
 
-#dict with heroes
+#dict with heroes and sorting the dict
 characters = {
     'Aang': 'Air',
     'Katara': 'Water',
-    'Sokka': 'None',
     'Toph': 'Earth',
     'Zuko': 'Fire',
     'Iroh': 'Fire',
@@ -150,20 +139,27 @@ characters = {
     }
 characters_sorted = {key: characters[key] for key in sorted(characters)}
 
-#Program's Title and showing the heroes' name
+#Program's Title and showing each heroes' name
 print(f"=-=- WELCOME TO THE AVATAR'S BATTLE GAME -=-=")
 print("\nHere's our heroes: ")
 for index, character in enumerate(characters_sorted.keys()):
     if index != len(characters.keys())-1:
         print(f'{character}', end=' - ')
-        if index == ((len(characters.keys())-1) / 2):
+        if index == int(((len(characters.keys())-1) / 2)):
             print('')
     else:
         print(f'{character}')
 
 #asking info for user
 name_user = str(input("\nWhat hero do you choose? ").strip().title())
-level_user = int(input("What's your hero's level? "))
+while name_user not in characters.keys():
+    name_user = str(input("\nWRONG HERO. Type again: ").strip().title())
+
+level_user = input("What's your hero's level? Choose only from 0 to 10: ")
+while not level_user.isnumeric() or (int(level_user) < 0 or int(level_user) > 10) :
+    level_user = input("We have to type a number from 0 to 10. Try again: ")    
+level_user = int(level_user)
+
 life_user_computer = int(100)
 skill_user = characters[name_user]
 
