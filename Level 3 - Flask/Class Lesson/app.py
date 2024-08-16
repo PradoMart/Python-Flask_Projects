@@ -13,7 +13,7 @@ def create_taks():
     task_id += 1
     tasks.append(new_task)
     print(tasks)
-    return jsonify({"message": "task created"})
+    return jsonify({"message": "task created", "id": new_task.id})
 
 @app.route('/tasks', methods=['GET'])
 def get_tasks():
