@@ -30,3 +30,29 @@ def test_get_especific_task():
         assert response.status_code == 200
         response_json = response.json()
         assert task_id == response_json['id']
+
+def test_update_task():
+    if tasks:
+        task_id = tasks[0]
+        payload = {
+                    "completed": True,
+                    "title": 'New title teste',
+                    "description": 'New description test'
+        }
+        response = requests.put(f'{BASE_URL}/{task_id}', json=payload)
+        assert response.status_code == 200
+        assert "message" in response.json()
+
+        #requisição get new informations
+
+        response_get = requests.get(f'{BASE_URL}/{task_id}')
+        assert payload["title"] == response_get.json()["title"]
+
+def test_delete_task():
+    if tasks:
+        task_id = tasks[0]
+        response = requests.delete(f'{BASE_URL}/{task_id}')
+        assert response.status_code == 200
+
+        #response_get = requests.get(f'{BASE_URL}/{task_id}')
+        #assert response_get.status_code == 404
