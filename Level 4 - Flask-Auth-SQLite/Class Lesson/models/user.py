@@ -1,9 +1,9 @@
-from app import db
+from models.database import db
+from flask_login import UserMixin
 
-class user(db.Model):
+class User(db.Model, UserMixin):
     #campos [type]: ID [integer], Username [string], Password [string]
 
     id = db.Column(db.Integer, primary_key=True)
-    user_name = db.Column(db.String[80], nullable=False, unique=True)
-    password = db.Columns(db.String[80], nullable=False)
-    
+    user_name = db.Column(db.String(80), nullable=False, unique=True)
+    password = db.Column(db.String(80), nullable=False)
