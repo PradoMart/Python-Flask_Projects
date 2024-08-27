@@ -83,6 +83,7 @@ def update_user(id_user):
         return jsonify({"message": f"{user.user_name} your password was reseted."})
     return jsonify({"message": "User not found."}), 404
 
+#deleting user
 @app.route('/user/<int:id_user>', methods=['DELETE'])
 @login_required
 def delete_user(id_user):
