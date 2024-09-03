@@ -1,0 +1,15 @@
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: 'health123'
+      MYSQL_DATABASE: 'Daily-Diet'
+      MYSQL_ROOT_PASSWORD: 'health123'
+    ports:
+      - "3306:3306"
+    expose:
+      - '3306'
+    volumes:
+      - C:/Users/leand/Desktop/volumes_docker/Daily_diet_project/volumes_docker/mysql:/var/lib/mysql
